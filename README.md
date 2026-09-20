@@ -45,7 +45,7 @@ Instead of driving blind or fumbling with your phone, you simply speak into MEDU
 ## ⚙️ Technical Architecture
 
 ```mermaid
-graph TD
+flowchart TD
     %% Styling
     classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:white,font-weight:bold;
     classDef render fill:#000000,stroke:#46E3B7,stroke-width:2px,color:white,font-weight:bold;
@@ -53,49 +53,55 @@ graph TD
     classDef db fill:#3B48CC,stroke:#232F3E,stroke-width:2px,color:white,font-weight:bold;
     classDef api fill:#00C7B7,stroke:#008F83,stroke-width:2px,color:black,font-weight:bold;
 
-    %% Nodes
     User(("🗣️ User<br/>(Voice/Text)"))
     Frontend["🌐 React Dashboard<br/>(AWS Amplify)"]:::aws
-    
-    subgraph "Backend (Render)"
+
+    User -->|"Trigger Emergency"| Frontend
+
+    subgraph "Cloud Backend (Render)"
+        direction TB
         FastAPI["⚡ FastAPI Server<br/>(Uvicorn)"]:::render
-        MCP["⚙️ MCP Server<br/>(21 Tools)"]:::render
-    end
-
-    subgraph "🧠 Multi-Agent Swarm (Groq / Gemini)"
-        ChiefAgent["👑 Chief Coordinator Agent"]:::llm
-        TriageAgent["🩺 Clinical Triage Agent"]:::llm
-        LogisticsAgent["🚑 Logistics & Routing Agent"]:::llm
-        CommsAgent["📡 Communications Agent"]:::llm
         
-        ChiefAgent --> TriageAgent
-        ChiefAgent --> LogisticsAgent
-        ChiefAgent --> CommsAgent
+        subgraph "🧠 AI Reasoning Engine"
+            direction TB
+            ChiefAgent["👑 Chief Coordinator"]:::llm
+            TriageAgent["🩺 Clinical Triage"]:::llm
+            LogisticsAgent["🚑 Logistics & Routing"]:::llm
+            CommsAgent["📡 Communications"]:::llm
+            
+            ChiefAgent -->|"Delegates"| TriageAgent
+            ChiefAgent -->|"Delegates"| LogisticsAgent
+            ChiefAgent -->|"Delegates"| CommsAgent
+        end
+        
+        MCP["⚙️ MCP Tool Server<br/>(21 Actions)"]:::render
+
+        FastAPI <-->|"SSE Stream"| ChiefAgent
+        ChiefAgent <-->|"Invokes"| MCP
+        TriageAgent -.->|"Invokes"| MCP
+        LogisticsAgent -.->|"Invokes"| MCP
+        CommsAgent -.->|"Invokes"| MCP
     end
 
-    subgraph "AWS Serverless Infrastructure"
-        DynamoDB[("🗄️ DynamoDB<br/>(State & Memory)")]:::db
-        EventBridge["🔄 EventBridge<br/>(Event Bus)"]:::aws
-        SNS["✉️ Amazon SNS<br/>(SMS/Email Alerts)"]:::aws
-        CloudWatch["📊 CloudWatch<br/>(Metrics & Logs)"]:::aws
+    Frontend <-->|"HTTP Requests"| FastAPI
+
+    subgraph "State, Event Bus & External APIs"
+        direction LR
+        DynamoDB[("🗄️ DynamoDB<br/>(Memory)")]:::db
+        SerpAPI["🏥 SerpAPI<br/>(Routing)"]:::api
+        CloudWatch["📊 CloudWatch<br/>(Metrics)"]:::aws
+        EventBridge["🔄 EventBridge<br/>(Async Bus)"]:::aws
+        SNS["✉️ Amazon SNS<br/>(SMS/Email)"]:::aws
     end
 
-    SerpAPI["🏥 SerpAPI<br/>(Hospital Routing)"]:::api
-
-    %% Connections
-    User -- "Emergency Trigger" --> Frontend
-    Frontend -- "HTTP Server-Sent Events" --> FastAPI
-    FastAPI <--> MCP
-    MCP <--> ChiefAgent
-
-    %% Tool execution connections
-    MCP -- "Read/Write State" --> DynamoDB
-    MCP -- "Emit Event" --> EventBridge
-    MCP -- "Push Metrics" --> CloudWatch
-    MCP -- "Notify Family" --> SNS
-    MCP -- "Find Care" --> SerpAPI
-
-    EventBridge -. "Async Fan-out" .-> SNS
+    %% Execution Connections
+    MCP -->|"Patient Data"| DynamoDB
+    MCP -->|"Search Hospitals"| SerpAPI
+    MCP -->|"Log Action"| CloudWatch
+    MCP -->|"Publish Event"| EventBridge
+    
+    EventBridge -.->|"Async Fan-out"| SNS
+    MCP -->|"Direct Trigger"| SNS
 ```
 
 ### 🧠 Agentic Architecture & MCP Server
