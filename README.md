@@ -12,6 +12,13 @@
 
 <br/>
 
+## 🌐 Live Deployment
+
+- **Frontend (AWS Amplify):** [https://main.dddmbfpar1dht.amplifyapp.com](https://main.dddmbfpar1dht.amplifyapp.com)
+- **Backend (Render):** [https://medusa-v8l9.onrender.com/ping](https://medusa-v8l9.onrender.com/ping) *(Status check)*
+
+---
+
 ## 🚨 The Problem: The Deadly Guesswork of the "Golden Hour"
 
 **Imagine this:** It's 2:00 AM in a rural town. Your father collapses, clutching his chest. Panic sets in. You do what anyone would do—you throw him in the car and speed to the *nearest* local clinic. 
