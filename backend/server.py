@@ -52,6 +52,14 @@ register_handoff_tools(mcp)
 register_operations_tools(mcp)
 register_triage_tools(mcp)
 
+@app.get("/")
+async def root_ping():
+    return {"status": "alive"}
+
+@app.get("/ping")
+async def ping():
+    return {"status": "alive"}
+
 # REST APIs for Memory Visualizer
 @app.get("/api/memory/user")
 async def get_user_memory():
