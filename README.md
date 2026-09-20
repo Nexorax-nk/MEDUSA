@@ -280,4 +280,18 @@ Open `http://localhost:5173` in your browser.
 
 ---
 
-*Built with ❤️ for the Hackathon. Saving lives, one millisecond at a time.*
+## 🎉 Acknowledgements
+
+This project was proudly built for the **[Bharat Builds Tour](https://www.wemakedevs.org/aws)** hackathon. 
+
+We were deeply inspired by the prompt to *"build something that solves a real problem: one you deal with yourself, one the people around you face every day, or a clunky way of doing things nobody has bothered to fix yet."* 
+
+The glaring inefficiencies in rural emergency medical dispatch is a terrifying, clunky reality that costs lives every single day. **MEDUSA** was our attempt to think outside the box in the healthcare sector and build a solution that genuinely matters. 
+
+A massive thank you to **WeMakeDevs** and **AWS** for organizing this incredible event, providing the platform to build, and pushing us to tackle real-world problems head-on. 
+
+<br/>
+
+<div align="center">
+  <b>Built with ❤️ by Naveen. Saving lives, one millisecond at a time.</b>
+</div>
