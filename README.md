@@ -163,6 +163,43 @@ The MEDUSA React Command Center is deployed globally via **AWS Amplify**.
 
 ---
 
+## 📂 Project Structure
+
+MEDUSA is organized into a clean monorepo, separating the Python AI backend from the React frontend.
+
+```text
+MEDUSA/
+├── backend/                       # Python AI & MCP Server
+│   ├── medusa/
+│   │   ├── tools/                 # The 21 MCP Tools (Categorized by domain)
+│   │   │   ├── care.py            # SerpAPI hospital discovery tools
+│   │   │   ├── communication.py   # AWS SNS & Email family notification tools
+│   │   │   ├── handoff.py         # Clinical handoff generation tools
+│   │   │   ├── patient.py         # DynamoDB patient profile retrieval
+│   │   │   └── triage.py          # Clinical severity assignment tools
+│   │   ├── agent.py               # Core LLM prompt and emergency reasoning loop
+│   │   ├── cloudwatch.py          # AWS telemetry and metric publishing
+│   │   ├── database.py            # In-memory transient state manager
+│   │   └── history_db.py          # DynamoDB persistence layer logic
+│   ├── server.py                  # FastAPI entry point & SSE streaming logic
+│   └── requirements.txt           # Python dependencies (fastapi, groq, boto3)
+│
+├── frontend/                      # React & TypeScript Command Center
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── CommandCenter/
+│   │   │   │   ├── AgentStatusGrid.tsx    # Renders the Multi-Agent swarm statuses
+│   │   │   │   ├── MCPActivityFeed.tsx    # Live SSE feed of the AI's "thought process"
+│   │   │   │   ├── MemoryTab.tsx          # Displays DynamoDB patient profile data
+│   │   │   │   └── WorkflowsTab.tsx       # Draggable dynamic node graph
+│   │   │   └── VoiceHero.tsx              # The main voice/text emergency input UI
+│   │   ├── context/
+│   │   │   └── IncidentContext.tsx        # Global React state for active emergencies
+│   │   └── App.tsx                        # Main application router
+```
+
+---
+
 ## 🚀 Local Setup
 
 ### 1. Clone the Repository
