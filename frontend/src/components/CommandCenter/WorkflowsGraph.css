@@ -1,0 +1,173 @@
+/* WorkflowsGraph.css */
+
+.custom-agent-node {
+  background: rgba(20, 20, 25, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 14px;
+  min-width: 180px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-family: var(--font-primary);
+  transition: all 0.3s ease;
+}
+
+.custom-agent-node.executing,
+.custom-agent-node.active {
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 20px rgba(255, 94, 0, 0.2), inset 0 0 10px rgba(255, 94, 0, 0.1);
+  animation: node-pulse 2s infinite ease-in-out;
+}
+
+.custom-agent-node.done {
+  border-color: var(--accent-cyan);
+}
+
+.custom-agent-node.aws {
+  background: rgba(255, 153, 0, 0.05);
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.05);
+  color: #ff9900;
+  min-width: auto;
+  padding: 12px 24px;
+}
+.custom-agent-node.aws .agent-node-icon svg {
+  color: #ff9900;
+}
+.custom-agent-node.orchestrator {
+  border-bottom: 2px solid var(--accent-orange);
+}
+
+.agent-node-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.custom-agent-node.aws .agent-node-header {
+  margin-bottom: 0;
+}
+
+.agent-node-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.custom-agent-node.executing .agent-node-icon {
+  background: rgba(255, 94, 0, 0.2);
+  color: var(--accent-orange);
+}
+
+.agent-node-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.agent-node-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.agent-node-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.agent-node-status.executing {
+  color: var(--accent-orange);
+}
+
+.agent-node-status.done {
+  color: var(--accent-cyan);
+}
+
+.agent-node-status.standby {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.agent-node-tool {
+  font-size: 11px;
+  font-family: var(--mono);
+  background: rgba(0,0,0,0.3);
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tool-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+}
+
+.tool-name {
+  color: var(--accent-cyan);
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes node-pulse {
+  0% { box-shadow: 0 0 10px rgba(255, 94, 0, 0.1); }
+  50% { box-shadow: 0 0 25px rgba(255, 94, 0, 0.4); }
+  100% { box-shadow: 0 0 10px rgba(255, 94, 0, 0.1); }
+}
+
+.node-handle {
+  background: #555 !important;
+  width: 8px !important;
+  height: 8px !important;
+  border: 1px solid #222 !important;
+}
+
+.custom-agent-node.executing .node-handle {
+  background: var(--accent-orange) !important;
+  border-color: #fff !important;
+}
+
+/* Custom Edge Animation styles */
+.react-flow__edge-path {
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 2;
+}
+
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke: var(--accent-orange);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 4px var(--accent-orange));
+  animation: dashdraw 0.5s linear infinite;
+  stroke-dasharray: 5, 5;
+}
+
+.react-flow__edge.done-edge .react-flow__edge-path {
+  stroke: var(--accent-cyan);
+  stroke-width: 1.5;
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+}
