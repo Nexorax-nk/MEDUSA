@@ -1,0 +1,119 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  MEDUSA AWS Hackathon Serverless Backend
+  Includes FastAPI (Lambda), EventBridge, and Step Functions
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Environment:
+      Variables:
+        # These will be populated from the AWS Parameter Store or passed in during deployment
+        AWS_DEFAULT_REGION: us-east-1
+
+Resources:
+  # 1. THE FASTAPI LAMBDA FUNCTION
+  MedusaApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda_dist/
+      Handler: server.handler
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Events:
+        MedusaApi:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+        RootApi:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: MedusaConversations
+        - DynamoDBCrudPolicy:
+            TableName: MedusaIncidents
+        - DynamoDBCrudPolicy:
+            TableName: MedusaUserData
+        - EventBridgePutEventsPolicy:
+            EventBusName: default
+        - SNSPublishMessagePolicy:
+            TopicName: "MedusaEmergencyAlerts"
+
+  # 2. EVENTBRIDGE RULE TO TRIGGER STEP FUNCTION
+  MedusaEmergencyRule:
+    Type: AWS::Events::Rule
+    Properties: 
+      Description: "Routes Medusa Emergency events to Step Functions"
+      EventPattern: 
+        source: 
+          - "medusa.emergency"
+        detail-type:
+          - "Emergency.Escalated"
+      State: "ENABLED"
+      Targets: 
+        - Arn: !Ref MedusaEmergencyStateMachine
+          Id: "TriggerMedusaStepFunction"
+          RoleArn: !GetAtt EventBridgeInvokeRole.Arn
+
+  # 3. AWS STEP FUNCTION STATE MACHINE
+  MedusaEmergencyStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Definition:
+        StartAt: EmergencyTriage
+        States:
+          EmergencyTriage:
+            Type: Pass
+            Result: "HighPriority"
+            ResultPath: "$.triage_result"
+            Next: ParallelAction
+          ParallelAction:
+            Type: Parallel
+            End: true
+            Branches:
+              - StartAt: NotifyFamily
+                States:
+                  NotifyFamily:
+                    Type: Pass
+                    Result: "FamilyNotified"
+                    End: true
+              - StartAt: DispatchResponders
+                States:
+                  DispatchResponders:
+                    Type: Pass
+                    Result: "RespondersDispatched"
+                    End: true
+      Policies:
+        - CloudWatchPutMetricPolicy: {}
+
+  # 4. IAM ROLE FOR EVENTBRIDGE TO TRIGGER STEP FUNCTION
+  EventBridgeInvokeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: "InvokeStepFunction"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "states:StartExecution"
+                Resource: !Ref MedusaEmergencyStateMachine
+
+Outputs:
+  MedusaApi:
+    Description: "API Gateway endpoint URL for Prod stage for MEDUSA"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
