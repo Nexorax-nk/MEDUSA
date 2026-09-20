@@ -47,7 +47,7 @@ def register_communication_tools(mcp):
                 status = "✅ Email Delivered (AWS SNS)"
                 
                 try:
-                    from .cloudwatch import push_metric
+                    from backend.medusa.cloudwatch import push_metric
                     push_metric('SMSAlertsSent', 1)
                 except Exception:
                     pass

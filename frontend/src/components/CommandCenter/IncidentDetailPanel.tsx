@@ -1,9 +1,5 @@
-import React from 'react';
 import { useIncident } from '../../context/IncidentContext';
 import { User, Activity, AlertCircle, MapPin, Phone, ShieldAlert, CheckCircle2 } from 'lucide-react';
-import { AgentStatusGrid } from './AgentStatusGrid';
-import { MCPActivityFeed } from './MCPActivityFeed';
-import { RuntimeTerminal } from './RuntimeTerminal';
 import { EmergencyContactsWidget, CareResourceWidget, TransportWidget, HandoffSummaryWidget } from './ResponseWidgets';
 import './IncidentDetailPanel.css';
 

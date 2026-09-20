@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useIncident } from '../../context/IncidentContext';
 import { Terminal } from 'lucide-react';
 import './EngineRoom.css';

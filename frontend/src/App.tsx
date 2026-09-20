@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { Mic, LayoutDashboard, MessageSquare } from 'lucide-react';
 import { VoiceConsole } from './pages/VoiceConsole';

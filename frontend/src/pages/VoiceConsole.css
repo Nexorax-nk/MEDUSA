@@ -318,6 +318,7 @@
   font-weight: 700;
   background: linear-gradient(90deg, #fff0e6 0%, #ff8c00 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0 0 16px 0;
   filter: drop-shadow(0 4px 12px rgba(255, 122, 0, 0.15));
@@ -745,6 +746,7 @@
   font-weight: 500;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

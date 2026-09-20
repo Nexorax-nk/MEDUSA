@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useIncident } from '../context/IncidentContext';
 import { WorkflowsTab } from '../components/CommandCenter/WorkflowsTab';
 import { IncidentDetailPanel } from '../components/CommandCenter/IncidentDetailPanel';
@@ -13,7 +13,6 @@ import {
   Network, 
   Cloud, 
   GitMerge, 
-  Activity, 
   Terminal,
   Database
 } from 'lucide-react';

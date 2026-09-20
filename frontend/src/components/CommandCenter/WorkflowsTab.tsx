@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useIncident } from '../../context/IncidentContext';
 import { ReactFlow, Background, useNodesState, useEdgesState } from '@xyflow/react';
 import type { Node, Edge } from '@xyflow/react';

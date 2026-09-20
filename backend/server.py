@@ -210,9 +210,9 @@ async def trigger_emergency(request: Request):
 # Mount the MCP SSE app onto the FastAPI app
 app.mount("/mcp", mcp.sse_app)
 
-# AWS Lambda Adapter (Mangum)
-from mangum import Mangum
-handler = Mangum(app)
+# AWS Lambda Adapter (Mangum) - Obsolete after pivot to Render
+# from mangum import Mangum
+# handler = Mangum(app)
 
 if __name__ == "__main__":
     print("Starting MEDUSA Core with FastAPI + MCP on port 8000...")

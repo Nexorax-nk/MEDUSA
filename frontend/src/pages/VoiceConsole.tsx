@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { VoiceHero } from '../components/VoiceHero';
 import { useIncident } from '../context/IncidentContext';
 import { TypewriterText } from '../components/TypewriterText';
-import { Mic, Send, Square, Clock, MessageSquare, Zap, CheckCircle2, Loader2, Trash2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Mic, Send, Square, Clock, MessageSquare, Zap, CheckCircle2, Loader2, Trash2, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Navigation } from '../App';
 import './VoiceConsole.css';
 
 export function VoiceConsole() {
-  const { status, triggerEmergency, toolEvents, addLog } = useIncident();
+  const { triggerEmergency, toolEvents, addLog } = useIncident();
   const [transcript, setTranscript] = useState<{ id: string, speaker: 'USER' | 'ALEXA'; text: string; isError?: boolean }[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -54,7 +54,7 @@ export function VoiceConsole() {
     setShowHistory(true);
     setLoadingHistory(true);
     try {
-      const res = await fetch('http://localhost:8000/api/history');
+      const res = await fetch('https://medusa-v8l9.onrender.com/api/history');
       if (res.ok) {
         const data = await res.json();
         setHistorySessions(data.conversations || []);
@@ -67,7 +67,7 @@ export function VoiceConsole() {
 
   const deleteSession = async (sessionId: string) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/history/${sessionId}`, {
+      const res = await fetch(`https://medusa-v8l9.onrender.com/api/history/${sessionId}`, {
         method: 'DELETE',
       });
       if (res.ok) {

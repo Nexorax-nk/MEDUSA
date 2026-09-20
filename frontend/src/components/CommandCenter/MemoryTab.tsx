@@ -9,9 +9,9 @@ export function MemoryTab() {
     const fetchMemory = async () => {
       try {
         const [userRes, patientRes, incRes] = await Promise.all([
-          fetch('http://localhost:8000/api/memory/user'),
-          fetch('http://localhost:8000/api/memory/patient?patient_id=father'),
-          fetch('http://localhost:8000/api/incidents')
+          fetch('https://medusa-v8l9.onrender.com/api/memory/user'),
+          fetch('https://medusa-v8l9.onrender.com/api/memory/patient?patient_id=father'),
+          fetch('https://medusa-v8l9.onrender.com/api/incidents')
         ]);
         
         const userData = await userRes.json();

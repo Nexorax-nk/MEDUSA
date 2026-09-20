@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useIncident } from '../../context/IncidentContext';
 import { Cpu, CheckCircle2, PlayCircle, Clock, AlertCircle, Terminal as TerminalIcon, Database, Activity, Radio } from 'lucide-react';
 import './EngineRoom.css'; // Shared CSS for the lower panels

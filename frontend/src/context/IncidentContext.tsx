@@ -181,7 +181,7 @@ export const IncidentProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     const fetchHistoryLogs = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/history');
+        const res = await fetch('https://medusa-v8l9.onrender.com/api/history');
         if (res.ok) {
           const data = await res.json();
           const rawLogs: { date: Date, id: string, time: string, level: string, source: string, message: string }[] = [];
@@ -328,7 +328,7 @@ export const IncidentProvider: React.FC<{ children: ReactNode }> = ({ children }
       };
 
       try {
-        const response = await fetch('http://localhost:8000/api/trigger-emergency', {
+        const response = await fetch('https://medusa-v8l9.onrender.com/api/trigger-emergency', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt, history, session_id: sessionId }),
@@ -386,7 +386,7 @@ export const IncidentProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const fetchLiveState = async () => {
     try {
-      const incRes = await fetch('http://localhost:8000/api/incidents');
+      const incRes = await fetch('https://medusa-v8l9.onrender.com/api/incidents');
       if (incRes.ok) {
         const data = await incRes.json();
         const incidentList = (Array.isArray(data) ? data : Object.values(data)) as Incident[];

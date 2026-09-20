@@ -1,4 +1,3 @@
-import React from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { Cpu, Clock, CheckCircle2, Loader2, Database, Network } from 'lucide-react';
 import './WorkflowsGraph.css';

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Mic } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import './VoiceHero.css';
 
 // Declare Web Speech API types for TypeScript

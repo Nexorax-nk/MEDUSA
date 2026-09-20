@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useIncident } from '../../context/IncidentContext';
 import { Phone, Users, MapPin, Download, CheckCircle2, CircleDashed, AlertTriangle } from 'lucide-react';

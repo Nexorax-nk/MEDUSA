@@ -132,6 +132,7 @@
   font-weight: 500;
   background: linear-gradient(90deg, #ffffff 0%, #ff8c00 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0 0 12px 0;
   filter: drop-shadow(0 4px 12px rgba(255, 122, 0, 0.2));
