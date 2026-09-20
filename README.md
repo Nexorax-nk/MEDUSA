@@ -169,33 +169,52 @@ MEDUSA is organized into a clean monorepo, separating the Python AI backend from
 
 ```text
 MEDUSA/
-├── backend/                       # Python AI & MCP Server
+├── backend/                               # Python AI & MCP Server
 │   ├── medusa/
-│   │   ├── tools/                 # The 21 MCP Tools (Categorized by domain)
-│   │   │   ├── care.py            # SerpAPI hospital discovery tools
-│   │   │   ├── communication.py   # AWS SNS & Email family notification tools
-│   │   │   ├── handoff.py         # Clinical handoff generation tools
-│   │   │   ├── patient.py         # DynamoDB patient profile retrieval
-│   │   │   └── triage.py          # Clinical severity assignment tools
-│   │   ├── agent.py               # Core LLM prompt and emergency reasoning loop
-│   │   ├── cloudwatch.py          # AWS telemetry and metric publishing
-│   │   ├── database.py            # In-memory transient state manager
-│   │   └── history_db.py          # DynamoDB persistence layer logic
-│   ├── server.py                  # FastAPI entry point & SSE streaming logic
-│   └── requirements.txt           # Python dependencies (fastapi, groq, boto3)
+│   │   ├── tools/                         # The 21 MCP Tools (Categorized by domain)
+│   │   │   ├── care.py                    # SerpAPI hospital & specialist discovery
+│   │   │   ├── communication.py           # AWS SNS & Email family notification tools
+│   │   │   ├── community.py               # First-responder broadcast routing
+│   │   │   ├── handoff.py                 # Clinical handoff document generation
+│   │   │   ├── incident.py                # DynamoDB incident creation & tracking
+│   │   │   ├── operations.py              # System-wide operational overrides
+│   │   │   ├── patient.py                 # DynamoDB patient profile retrieval
+│   │   │   ├── situation.py               # Environmental context & location parsing
+│   │   │   ├── transport.py               # Ambulance dispatch & routing coordination
+│   │   │   └── triage.py                  # Clinical severity assignment tools
+│   │   ├── agent.py                       # Core LLM prompt and emergency reasoning loop
+│   │   ├── cloudwatch.py                  # AWS telemetry and metric publishing
+│   │   ├── database.py                    # In-memory transient state manager
+│   │   ├── history_db.py                  # DynamoDB persistence layer logic
+│   │   └── medusa_local.db                # Local SQLite fallback for disconnected edge nodes
+│   ├── .env                               # Secret environment variables (AWS, Groq, SerpAPI)
+│   ├── multi_agent_orchestrator.py        # Swarm logic connecting Chief, Triage, and Comms agents
+│   ├── requirements.txt                   # Python dependencies (fastapi, groq, boto3, uvicorn)
+│   ├── server.py                          # FastAPI entry point & SSE streaming logic
+│   ├── simulate_alexa.py                  # CLI script for testing voice-triggered emergencies
+│   └── start_with_tunnel.py               # Ngrok integration for local webhook testing
 │
-├── frontend/                      # React & TypeScript Command Center
+├── frontend/                              # React & TypeScript Command Center
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── CommandCenter/
-│   │   │   │   ├── AgentStatusGrid.tsx    # Renders the Multi-Agent swarm statuses
+│   │   │   │   ├── AgentStatusGrid.tsx    # Renders the Multi-Agent swarm online statuses
+│   │   │   │   ├── AWSInfrastructureState.tsx # Live metrics on DynamoDB & SNS latency
+│   │   │   │   ├── CustomAgentNode.tsx    # Custom ReactFlow node for agent visualization
+│   │   │   │   ├── IncidentDetailPanel.tsx# Expanded view of patient vitals and timeline
 │   │   │   │   ├── MCPActivityFeed.tsx    # Live SSE feed of the AI's "thought process"
 │   │   │   │   ├── MemoryTab.tsx          # Displays DynamoDB patient profile data
+│   │   │   │   ├── ResponseWidgets.tsx    # Quick-action toggles for the human operator
+│   │   │   │   ├── RuntimeTerminal.tsx    # Mock terminal output for hacker-style aesthetic
 │   │   │   │   └── WorkflowsTab.tsx       # Draggable dynamic node graph
+│   │   │   ├── DataStream.tsx             # Animated data streaming UI component
+│   │   │   ├── TypewriterText.tsx         # Cyberpunk text animation utility
 │   │   │   └── VoiceHero.tsx              # The main voice/text emergency input UI
 │   │   ├── context/
 │   │   │   └── IncidentContext.tsx        # Global React state for active emergencies
-│   │   └── App.tsx                        # Main application router
+│   │   ├── pages/
+│   │   │   └── CommandCenter.tsx          # Main Command Center dashboard layout
+│   │   └── App.tsx                        # Main application React router
 ```
 
 ---
