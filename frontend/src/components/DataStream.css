@@ -1,0 +1,101 @@
+.data-stream-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: rgba(20, 20, 22, 0.85);
+  border: 1px solid var(--border-focus);
+}
+
+.ds-scanline {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+}
+
+.ds-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+}
+
+.ds-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--status-success);
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.ds-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.ds-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.ds-entries {
+  overflow-y: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding-bottom: 8px;
+}
+
+.ds-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 6px 16px;
+}
+
+.ds-dot {
+  margin-top: 6px;
+  width: 4px;
+  height: 4px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.ds-time {
+  flex-shrink: 0;
+  color: var(--text-dim);
+}
+
+.ds-text {
+  line-height: 1.4;
+}
+
+@keyframes dataStreamFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ds-corner {
+  pointer-events: none;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--accent-orange);
+}
+
+.ds-tl { top: 0; left: 0; border-top: 2px solid; border-left: 2px solid; }
+.ds-tr { top: 0; right: 0; border-top: 2px solid; border-right: 2px solid; }
+.ds-bl { bottom: 0; left: 0; border-bottom: 2px solid; border-left: 2px solid; }
+.ds-br { bottom: 0; right: 0; border-bottom: 2px solid; border-right: 2px solid; }

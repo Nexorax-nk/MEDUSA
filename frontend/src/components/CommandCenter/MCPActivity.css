@@ -1,0 +1,298 @@
+.mcp-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 20px;
+  overflow: hidden;
+  padding: 24px;
+}
+
+/* Horizontal Health Strip */
+.mcp-health-strip {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(30, 30, 30, 0.4) 0%, rgba(10, 10, 10, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px 28px;
+  gap: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+.mcp-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 94, 0, 0.2);
+}
+
+.mcp-brand svg {
+  color: var(--accent-orange);
+}
+
+.mcp-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 255, 100, 0.08);
+  border: 1px solid rgba(0, 255, 100, 0.2);
+  color: #00ff64;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  box-shadow: 0 0 12px rgba(0, 255, 100, 0.1);
+}
+
+.mcp-status-pill .dot {
+  width: 6px;
+  height: 6px;
+  background: #00ff64;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #00ff64;
+}
+
+.mcp-health-divider {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15), transparent);
+}
+
+.mcp-health-metrics {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.mcp-health-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mcp-health-stat .label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.mcp-health-stat .value {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.mcp-health-stat .value.active {
+  color: #00ff64;
+  text-shadow: 0 0 10px rgba(0, 255, 100, 0.2);
+}
+
+/* Split Content */
+.mcp-content-split {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+.mcp-panel {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mcp-section-header {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+
+.mcp-section-header span {
+  color: var(--accent-orange);
+  margin-right: 4px;
+}
+
+/* Left: Live Tool Calls (Terminal Style) */
+.mcp-live-panel {
+  flex: 1;
+  background: #050505; /* Terminal black */
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.mcp-live-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Tighter gap for terminal logs */
+  padding-right: 12px;
+}
+
+.mcp-live-row {
+  display: grid;
+  grid-template-columns: 85px 20px 1fr 75px 50px;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.mcp-live-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.mcp-live-row .time {
+  color: var(--accent-orange);
+  font-size: 11px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.mcp-live-row .status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mcp-live-row .status-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.mcp-live-row .status-icon.success svg { color: #00ff64; }
+.mcp-live-row .status-icon.running svg { color: var(--accent-orange); }
+.mcp-live-row .status-icon.failed svg { color: #ff3366; }
+.mcp-live-row .status-icon.queued svg { color: rgba(255,255,255,0.5); }
+
+.mcp-live-row .tool {
+  color: #ffffff; /* White like img 1 */
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mcp-live-row .incident {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  white-space: nowrap;
+  text-align: right; /* Align right to match latency */
+}
+
+.mcp-live-row .latency {
+  color: #666;
+  font-size: 11px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Right: Tool Registry Grid */
+.mcp-registry-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+.mcp-registry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 24px;
+}
+
+.mcp-category {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mcp-category-title {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--accent-orange);
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 94, 0, 0.2);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+
+.mcp-registry-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 12px;
+  border-left: 2px solid rgba(255, 255, 255, 0.05);
+  transition: border-color 0.2s;
+}
+
+.mcp-registry-item:hover {
+  border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.mcp-registry-item .tool-name {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.mcp-registry-item .tool-desc {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.4;
+}
+
+/* Hide Scrollbars */
+.mcp-live-list::-webkit-scrollbar,
+.mcp-registry-scroll::-webkit-scrollbar {
+  display: none;
+}
+.mcp-live-list,
+.mcp-registry-scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

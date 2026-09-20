@@ -1,0 +1,264 @@
+.engine-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.engine-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.engine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.engine-header h3 {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.engine-header .count {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.engine-content {
+  padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.engine-content.p-0 {
+  padding: 0;
+}
+
+/* Agent Grid */
+.agent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.agent-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.agent-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.agent-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.agent-row.active, .agent-row.executing { background: rgba(255, 94, 0, 0.1); border-color: rgba(255, 94, 0, 0.3); }
+.agent-row.active .agent-status-badge, .agent-row.executing .agent-status-badge { color: var(--accent-orange); }
+.icon-executing { color: var(--accent-orange); animation: spin-slow 2s linear infinite; }
+
+.agent-row.done { background: rgba(0, 255, 100, 0.05); }
+.agent-row.done .agent-status-badge { color: #00ff64; }
+.icon-done { color: #00ff64; }
+
+.agent-row.standby .agent-status-badge { color: rgba(255, 255, 255, 0.3); }
+.icon-standby { color: rgba(255, 255, 255, 0.3); }
+
+@keyframes spin-slow {
+  100% { transform: rotate(360deg); }
+}
+
+/* MCP Feed */
+.mcp-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.mcp-call-item {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mcp-call-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mcp-time {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.mcp-tool {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.mcp-call-payload {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #ffcc00;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  border: 1px solid rgba(255, 204, 0, 0.2);
+}
+
+.empty-feed {
+  padding: 32px;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Terminal */
+.terminal-card {
+  background: rgba(10, 10, 12, 0.95);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.terminal-header {
+  background: #000;
+  border-bottom: 1px solid #222;
+  justify-content: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.terminal-header svg { color: rgba(255, 255, 255, 0.4); }
+
+.terminal-feed {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.terminal-line {
+  display: flex;
+  gap: 12px;
+}
+
+.terminal-line.placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.term-time { color: rgba(255, 255, 255, 0.3); }
+.term-level.info { color: #4da6ff; }
+.term-level.event { color: #ff0055; }
+.term-level.mcp { color: #ffcc00; }
+.term-level.aws { color: var(--accent-orange); }
+.term-level.agent { color: #00ff64; }
+
+.term-source { color: rgba(255, 255, 255, 0.5); }
+.term-msg { color: #e0e0e0; }
+
+/* AWS Grid */
+.aws-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.aws-service-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.aws-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.aws-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.aws-name {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.aws-subtitle {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.aws-status {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.aws-service-node.running, .aws-service-node.active, .aws-service-node.synced {
+  background: rgba(255, 94, 0, 0.05);
+  border-color: rgba(255, 94, 0, 0.3);
+}
+
+.aws-service-node.running .aws-icon {
+  background: var(--accent-orange);
+  color: #000;
+}
+
+.aws-service-node.running .aws-status, .aws-service-node.active .aws-status {
+  color: var(--accent-orange);
+}

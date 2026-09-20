@@ -1,0 +1,240 @@
+/* AWS Ops Dashboard Layout */
+.aws-dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 24px;
+}
+
+.aws-service-node.selectable {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.aws-service-node.selectable:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.aws-service-node.selected {
+  background: rgba(255, 94, 0, 0.08);
+  border-color: rgba(255, 94, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.aws-service-node.selected .aws-icon {
+  color: var(--accent-orange);
+  background: rgba(255, 94, 0, 0.1);
+}
+
+/* Bottom Split Layout */
+.aws-ops-panel {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  min-height: 0; /* Important for flex child scrolling */
+}
+
+/* Left side: Metadata & Metrics */
+.aws-meta-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.aws-meta-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aws-meta-header {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aws-meta-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aws-meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aws-meta-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.aws-meta-value {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aws-meta-value.accent {
+  color: var(--accent-orange);
+  border-color: rgba(255, 94, 0, 0.2);
+  background: rgba(255, 94, 0, 0.05);
+}
+
+/* CloudWatch Grid */
+.cw-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cw-metric-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cw-metric-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.cw-metric-value {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: #00ff64;
+}
+
+.cw-chart-sparkline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 100, 0.1) 100%);
+  border-top: 1px dashed rgba(0, 255, 100, 0.3);
+}
+
+/* Right side: X-Ray Stream */
+.xray-panel {
+  flex: 1.5;
+  background: #000;
+  border: 1px solid #2a2522;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.xray-header {
+  background: #0d0b0a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2a2522;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.xray-title {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.xray-badge {
+  background: rgba(255, 94, 0, 0.1);
+  color: var(--accent-orange);
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 94, 0, 0.2);
+}
+
+.xray-terminal {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.xray-log-line {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  gap: 8px;
+}
+
+.xray-time {
+  color: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.xray-id {
+  color: #00e5ff;
+  flex-shrink: 0;
+}
+
+.xray-service {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.xray-message {
+  color: #e6dfd8;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.xray-terminal::-webkit-scrollbar {
+  width: 6px;
+}
+.xray-terminal::-webkit-scrollbar-track {
+  background: transparent;
+}
+.xray-terminal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
