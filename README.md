@@ -219,6 +219,24 @@ MEDUSA/
 
 ---
 
+## 🧠 My Learning Journey
+
+Building MEDUSA for this hackathon was an intense and incredibly rewarding sprint. Before this project, I hadn't worked deeply with several of these technologies, and the learning curve was steep but absolutely worth it.
+
+### ⚡ Mastering DynamoDB & SNS
+One of the biggest personal wins was integrating **Amazon DynamoDB** and **Amazon SNS**. 
+- I learned how to move away from traditional relational databases and embrace DynamoDB's NoSQL single-digit millisecond latency, which is absolutely vital for a real-time emergency state machine. 
+- Connecting **SNS (Simple Notification Service)** taught me how to implement true fan-out event-driven architectures. Learning how to trigger programmatic SMS and Email blasts to family members based on an AI agent's decision was a huge breakthrough for me.
+
+### 🏗️ The AWS Lambda Pivot (A Real-World Engineering Lesson)
+Originally, MEDUSA's FastAPI backend was entirely built to run on **AWS Lambda** (using the `Mangum` adapter) to achieve a 100% serverless, zero-maintenance deployment. 
+
+However, we hit a real-world infrastructure roadblock: **AWS Account Verification Limits**. Due to security restrictions and quota limits on new AWS accounts during the hackathon weekend, we were unable to secure the necessary execution environments to deploy the Lambda function to production in time. 
+
+Instead of giving up, I learned how to rapidly pivot infrastructure under pressure. I migrated the compute layer to **Render** for high-availability hosting, while keeping the entire database, event bus, and notification layer firmly rooted in AWS. This taught me a massive lesson in decoupled architecture—because the system was built modularly, migrating the compute layer didn't break the database or the React frontend!
+
+---
+
 ## 🚀 Local Setup
 
 ### 1. Clone the Repository
