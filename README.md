@@ -1,14 +1,19 @@
-<div align="center">
-  <h1>🐍 MEDUSA</h1>
-  <p><b>Medical Emergency Dispatch & Universal Support Agent</b></p>
-  
-  <p>
-    <img src="https://img.shields.io/badge/Status-Live-success?style=for-the-badge" alt="Status"/>
-    <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS"/>
-    <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React"/>
-    <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI"/>
-  </p>
-</div>
+<h1 align="center">🐍 MEDUSA</h1>
+
+<p align="center">
+  <b>Medical Emergency Dispatch & Universal Support Agent</b>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Live-success?style=for-the-badge" alt="Status"/>
+  <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS"/>
+  <img src="https://img.shields.io/badge/DynamoDB-4053D6?style=for-the-badge&logo=Amazon%20DynamoDB&logoColor=white" alt="DynamoDB"/>
+  <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React"/>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/Groq-f55036?style=for-the-badge&logo=lightning&logoColor=white" alt="Groq"/>
+</p>
 
 <br/>
 
@@ -45,6 +50,7 @@ Instead of driving blind or fumbling with your phone, you simply speak into MEDU
 ## ⚙️ Technical Architecture
 
 ```mermaid
+%%{init: {'flowchart': {'nodesep': 100, 'ranksep': 120}}}%%
 flowchart TD
     %% Styling
     classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:white,font-weight:bold;
