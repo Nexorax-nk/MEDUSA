@@ -1,7 +1,7 @@
 <h1 align="center">🐍 MEDUSA</h1>
 
 <p align="center">
-  <b>Medical Emergency Dispatch & Universal Support Agent</b>
+  <b>Medical Emergency Dispatch & Unified Support Architecture</b>
 </p>
 
 <p align="center">
