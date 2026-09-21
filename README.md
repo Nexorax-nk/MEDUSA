@@ -17,6 +17,14 @@
 
 <br/>
 
+<p align="center">
+  <a href="https://youtu.be/seLUR11THE0">
+    <img src="assets/demo-thumbnail.png" alt="MEDUSA Demo Video" width="800" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);"/>
+  </a>
+</p>
+
+<br/>
+
 ## 🌐 Live Deployment
 
 - **Frontend (AWS Amplify):** [https://main.dddmbfpar1dht.amplifyapp.com](https://main.dddmbfpar1dht.amplifyapp.com)
@@ -180,7 +188,12 @@ Unchecked AI in a medical context is dangerous. We use **CloudWatch** to achieve
 - **Custom Metrics**: We push live telemetry (e.g., `EmergencyIncidentsCreated`, `SNSPublishSuccess`) to CloudWatch to track regional emergency spikes and system health.
 - **Agent Logging**: Every single tool invocation, thought process, and clinical decision made by the AI is streamed into a CloudWatch Log Group for post-incident medical audits and strict compliance tracking.
 
-### 5. AWS Amplify (Global Edge Hosting)
+### 5. Amazon S3 (Clinical Document Archival)
+Medical records demand extreme durability and secure storage. We use **Amazon S3** as our permanent artifact repository.
+- **Handoff Generation**: When the AI completes triage and assigns a hospital, it synthesizes a comprehensive Clinical Handoff document containing patient vitals, timeline, and specialist requirements.
+- **Automated Archival**: The backend intelligently provisions a secure, unique S3 bucket and uploads the JSON handoff payload in real-time, ensuring receiving hospitals have immediate, highly-available access to the paperwork before the ambulance arrives.
+
+### 6. AWS Amplify (Global Edge Hosting)
 The MEDUSA React Command Center is deployed globally via **AWS Amplify**.
 - Amplify provides aggressive edge-caching and instant load times, ensuring the dashboard loads instantly whether the operator is in a remote rural clinic or a metropolitan hospital.
 - It handles a secure, HTTPS-enforced pipeline with automatic CI/CD deployments straight from our GitHub repository.

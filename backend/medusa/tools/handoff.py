@@ -45,6 +45,48 @@ def register_handoff_tools(mcp):
             }
         }
         
+        # S3 Integration for secure handoff archival
+        import boto3
+        import os
+        from botocore.exceptions import ClientError
+        
+        try:
+            region_name = os.getenv("AWS_DEFAULT_REGION", "us-east-1")
+            s3_client = boto3.client('s3', region_name=region_name)
+            sts_client = boto3.client('sts', region_name=region_name)
+            account_id = sts_client.get_caller_identity()["Account"]
+            
+            # Create a globally unique bucket name
+            bucket_name = f"medusa-handoffs-{account_id}-{region_name}"
+            
+            # Ensure bucket exists
+            try:
+                s3_client.head_bucket(Bucket=bucket_name)
+            except ClientError:
+                if region_name == "us-east-1":
+                    s3_client.create_bucket(Bucket=bucket_name)
+                else:
+                    s3_client.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': region_name})
+            
+            # Upload handoff to S3
+            s3_key = f"handoffs/{incident_id}.json"
+            s3_client.put_object(
+                Bucket=bucket_name,
+                Key=s3_key,
+                Body=json.dumps(handoff, indent=2),
+                ContentType="application/json"
+            )
+            
+            # Log custom metric
+            try:
+                from backend.medusa.cloudwatch import push_metric
+                push_metric('S3HandoffsArchived', 1)
+            except Exception:
+                pass
+                
+        except Exception as e:
+            print(f"S3 Upload failed: {e}")
+        
         incident["handoff_state"]["generated"] = True
         incident["handoff_state"]["document"] = handoff
         db.handoffs[incident_id] = handoff
