@@ -1,5 +1,7 @@
-<h1 align="center">🐍 MEDUSA</h1>
-
+<div align="center">
+  <img src="https://cdn-icons-png.flaticon.com/512/3209/3209074.png" width="120" alt="MEDUSA Logo" />
+  <h1>MEDUSA</h1>
+</div>
 <p align="center">
   <b>Medical Emergency Dispatch & Unified Support Architecture</b>
 </p>
@@ -48,7 +50,7 @@ Instead of driving blind or fumbling with your phone, you simply speak into MEDU
 
 1. **The Context (Who):** MEDUSA instantly identifies the patient from its secure database, pulling their medical history, known allergies, and blood type.
 2. **The Triage (What):** It analyzes the spoken symptoms, assigns a clinical severity rating, and determines exactly what kind of specialist (e.g., neurologist, cardiologist, trauma surgeon) is required.
-3. **The Discovery (Where):** Bypassing the "nearest clinic" trap, MEDUSA scans real-time facility databases to locate the closest hospital that *actually has* the required specialist currently on duty and beds available.
+3. **The Discovery (Where):** Bypassing the "nearest clinic" trap, MEDUSA leverages **SerpAPI** to perform real-time, hyper-localized web searches. It actively scans Google Maps and local facility data to locate the closest hospital that *actually has* the required specialist currently on duty and beds available.
 4. **The Execution (Action):** Before you even process what is happening, MEDUSA has already dispatched an ambulance to your exact GPS coordinates, blasted SMS alerts to your family members, and securely transmitted a full clinical handoff document to the receiving hospital's doctors.
 
 **When every millisecond counts, MEDUSA thinks so you don't have to.**
@@ -163,6 +165,19 @@ By utilizing **HTTP Server-Sent Events (SSE)**, the React frontend maintains a p
 
 This provides human operators with split-second visibility into the AI's execution pipeline, ensuring transparency and trust as it makes life-saving decisions.
 
+---
+
+## 🔍 Powered by SerpAPI: Real-Time Intelligence
+
+A static medical database is practically useless during a live emergency. Facilities close, specialists go off-duty, and traffic blocks ambulance routes. To solve this, **MEDUSA relies heavily on SerpAPI** to give the AI real-time "eyes" on the physical world.
+
+When the AI agent invokes the `search_care_resources` tool, the backend triggers **SerpAPI's Google Maps and Local Search APIs** to dynamically scrape the surrounding area. 
+- The AI uses SerpAPI to find hyper-local trauma centers, cardiologists, or neurologists based on the patient's exact GPS coordinates.
+- It parses opening hours, contact details, and distance matrices.
+- Instead of routing a critical stroke patient to a closed local clinic, SerpAPI empowers the AI to confidently route the ambulance 10 miles further to a verified, open stroke center.
+
+Without SerpAPI's lightning-fast, structured search results, MEDUSA's autonomous routing would be impossible.
+
 ## ☁️ AWS Infrastructure Deep-Dive
 
 MEDUSA leans heavily into AWS serverless primitives to guarantee 99.99% uptime, sub-millisecond data retrieval, and highly decoupled asynchronous processing during a crisis.
@@ -260,6 +275,9 @@ MEDUSA/
 
 Building MEDUSA for this hackathon was an intense and incredibly rewarding sprint. Before this project, I hadn't worked deeply with several of these technologies, and the learning curve was steep but absolutely worth it.
 
+### 🔍 Harnessing Real-Time Data with SerpAPI
+A major breakthrough for me was integrating **SerpAPI**. Emergency routing is useless if the facility data is outdated. By hooking SerpAPI into the AI's toolset, I learned how to give the LLM real-time "eyes" on the world. It was incredibly exciting to write code that lets an AI autonomously query local hospitals, parse Google Maps data, and make life-or-death routing decisions based on live, real-world data rather than static databases. Learning how to cleanly parse and structure SerpAPI's JSON responses directly into my autonomous agent's memory was a game-changer.
+
 ### ⚡ Mastering DynamoDB & SNS
 One of the biggest personal wins was integrating **Amazon DynamoDB** and **Amazon SNS**. 
 - I learned how to move away from traditional relational databases and embrace DynamoDB's NoSQL single-digit millisecond latency, which is absolutely vital for a real-time emergency state machine. 
@@ -319,13 +337,8 @@ Open `http://localhost:5173` in your browser.
 
 ## 🎉 Acknowledgements
 
-This project was proudly built for the **[Bharat Builds Tour](https://www.wemakedevs.org/aws)** hackathon. 
+We were deeply inspired by the prompt to build something that utilizes search APIs to solve a real-world problem. The glaring inefficiencies in rural emergency medical dispatch is a terrifying, clunky reality that costs lives every single day. By leveraging SerpAPI, **MEDUSA** was our attempt to think outside the box in the healthcare sector and build a solution that genuinely matters. 
 
-We were deeply inspired by the prompt to *"build something that solves a real problem: one you deal with yourself, one the people around you face every day, or a clunky way of doing things nobody has bothered to fix yet."* 
-
-The glaring inefficiencies in rural emergency medical dispatch is a terrifying, clunky reality that costs lives every single day. **MEDUSA** was our attempt to think outside the box in the healthcare sector and build a solution that genuinely matters. 
-
-A massive thank you to **WeMakeDevs** and **AWS** for organizing this incredible event, providing the platform to build, and pushing us to tackle real-world problems head-on. 
 
 <br/>
 
