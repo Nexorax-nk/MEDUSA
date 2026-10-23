@@ -21,7 +21,11 @@ export function EmergencyContactsWidget() {
             <div className="rw-info">
               <span className="rw-title">{contact.type} - {contact.name}</span>
               <span className="rw-meta">
-                {pipeline?.familyNotified ? <><CheckCircle2 size={12} className="icon-done" /> Notification SENT</> : <><CircleDashed size={12} /> PENDING</>}
+                {pipeline?.familyNotified ? (
+                  <><CheckCircle2 size={12} className="icon-done" /> Alert Sent</>
+                ) : (
+                  <><CircleDashed size={12} /> Pending</>
+                )}
               </span>
             </div>
           </div>

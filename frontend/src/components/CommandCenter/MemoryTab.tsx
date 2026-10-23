@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
 import './MemoryTab.css';
 
 export function MemoryTab() {
@@ -9,9 +10,9 @@ export function MemoryTab() {
     const fetchMemory = async () => {
       try {
         const [userRes, patientRes, incRes] = await Promise.all([
-          fetch('https://medusa-v8l9.onrender.com/api/memory/user'),
-          fetch('https://medusa-v8l9.onrender.com/api/memory/patient?patient_id=father'),
-          fetch('https://medusa-v8l9.onrender.com/api/incidents')
+          fetch(`${API_BASE_URL}/api/memory/user`),
+          fetch(`${API_BASE_URL}/api/memory/patient?patient_id=father`),
+          fetch(`${API_BASE_URL}/api/incidents`)
         ]);
         
         const userData = await userRes.json();

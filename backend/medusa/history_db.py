@@ -6,12 +6,20 @@ from dotenv import load_dotenv
 from botocore.exceptions import ClientError
 
 # Load environment variables (AWS credentials)
+medusa_dir = os.path.dirname(os.path.abspath(__file__))
+backend_dir = os.path.dirname(medusa_dir)
+load_dotenv(os.path.join(backend_dir, ".env"))
 load_dotenv()
 
 # Initialize DynamoDB Resource
 region_name = os.getenv("AWS_DEFAULT_REGION", "us-east-1")
-dynamodb = boto3.resource('dynamodb', region_name=region_name)
-client = boto3.client('dynamodb', region_name=region_name)
+try:
+    dynamodb = boto3.resource('dynamodb', region_name=region_name)
+    client = boto3.client('dynamodb', region_name=region_name)
+except Exception as e:
+    print(f"Warning: Could not initialize DynamoDB client: {e}")
+    dynamodb = None
+    client = None
 
 # Table Names
 CONVERSATIONS_TABLE = "MedusaConversations"
@@ -19,58 +27,67 @@ INCIDENTS_TABLE = "MedusaIncidents"
 USER_DATA_TABLE = "MedusaUserData"
 
 def _create_table_if_not_exists(table_name, key_schema, attribute_definitions):
+    if not client or not dynamodb:
+        return
     try:
         client.describe_table(TableName=table_name)
     except client.exceptions.ResourceNotFoundException:
         print(f"Creating DynamoDB Table: {table_name}...")
-        table = dynamodb.create_table(
-            TableName=table_name,
-            KeySchema=key_schema,
-            AttributeDefinitions=attribute_definitions,
-            BillingMode='PAY_PER_REQUEST'
-        )
-        table.meta.client.get_waiter('table_exists').wait(TableName=table_name)
-        print(f"Table {table_name} created successfully.")
+        try:
+            table = dynamodb.create_table(
+                TableName=table_name,
+                KeySchema=key_schema,
+                AttributeDefinitions=attribute_definitions,
+                BillingMode='PAY_PER_REQUEST'
+            )
+            table.meta.client.get_waiter('table_exists').wait(TableName=table_name)
+            print(f"Table {table_name} created successfully.")
+        except Exception as e:
+            print(f"Notice: DynamoDB table creation ({table_name}): {e}")
+    except Exception as e:
+        print(f"Notice: DynamoDB check for {table_name}: {e}")
 
 def init_db():
     """Create DynamoDB tables if they do not exist."""
     print("Initializing DynamoDB tables...")
-    
-    # Conversations table
-    _create_table_if_not_exists(
-        CONVERSATIONS_TABLE,
-        key_schema=[
-            {'AttributeName': 'session_id', 'KeyType': 'HASH'},
-            {'AttributeName': 'timestamp', 'KeyType': 'RANGE'}
-        ],
-        attribute_definitions=[
-            {'AttributeName': 'session_id', 'AttributeType': 'S'},
-            {'AttributeName': 'timestamp', 'AttributeType': 'S'}
-        ]
-    )
-    
-    # Incidents table
-    _create_table_if_not_exists(
-        INCIDENTS_TABLE,
-        key_schema=[
-            {'AttributeName': 'incident_id', 'KeyType': 'HASH'}
-        ],
-        attribute_definitions=[
-            {'AttributeName': 'incident_id', 'AttributeType': 'S'}
-        ]
-    )
+    try:
+        # Conversations table
+        _create_table_if_not_exists(
+            CONVERSATIONS_TABLE,
+            key_schema=[
+                {'AttributeName': 'session_id', 'KeyType': 'HASH'},
+                {'AttributeName': 'timestamp', 'KeyType': 'RANGE'}
+            ],
+            attribute_definitions=[
+                {'AttributeName': 'session_id', 'AttributeType': 'S'},
+                {'AttributeName': 'timestamp', 'AttributeType': 'S'}
+            ]
+        )
+        
+        # Incidents table
+        _create_table_if_not_exists(
+            INCIDENTS_TABLE,
+            key_schema=[
+                {'AttributeName': 'incident_id', 'KeyType': 'HASH'}
+            ],
+            attribute_definitions=[
+                {'AttributeName': 'incident_id', 'AttributeType': 'S'}
+            ]
+        )
 
-    # User Data table
-    _create_table_if_not_exists(
-        USER_DATA_TABLE,
-        key_schema=[
-            {'AttributeName': 'domain_key', 'KeyType': 'HASH'}
-        ],
-        attribute_definitions=[
-            {'AttributeName': 'domain_key', 'AttributeType': 'S'}
-        ]
-    )
-    print("DynamoDB initialization complete.")
+        # User Data table
+        _create_table_if_not_exists(
+            USER_DATA_TABLE,
+            key_schema=[
+                {'AttributeName': 'domain_key', 'KeyType': 'HASH'}
+            ],
+            attribute_definitions=[
+                {'AttributeName': 'domain_key', 'AttributeType': 'S'}
+            ]
+        )
+        print("DynamoDB initialization complete.")
+    except Exception as e:
+        print(f"Notice: DynamoDB initialization skipped/fallback ({e}). Ready locally.")
 
 def save_message(session_id: str, role: str, content: str):
     table = dynamodb.Table(CONVERSATIONS_TABLE)

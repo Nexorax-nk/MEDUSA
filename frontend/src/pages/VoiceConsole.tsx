@@ -5,6 +5,7 @@ import { TypewriterText } from '../components/TypewriterText';
 import { Mic, Send, Square, Clock, MessageSquare, Zap, CheckCircle2, Loader2, Trash2, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Navigation } from '../App';
+import { API_BASE_URL } from '../config/api';
 import './VoiceConsole.css';
 
 export function VoiceConsole() {
@@ -54,7 +55,7 @@ export function VoiceConsole() {
     setShowHistory(true);
     setLoadingHistory(true);
     try {
-      const res = await fetch('https://medusa-v8l9.onrender.com/api/history');
+      const res = await fetch(`${API_BASE_URL}/api/history`);
       if (res.ok) {
         const data = await res.json();
         setHistorySessions(data.conversations || []);
@@ -67,7 +68,7 @@ export function VoiceConsole() {
 
   const deleteSession = async (sessionId: string) => {
     try {
-      const res = await fetch(`https://medusa-v8l9.onrender.com/api/history/${sessionId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/history/${sessionId}`, {
         method: 'DELETE',
       });
       if (res.ok) {

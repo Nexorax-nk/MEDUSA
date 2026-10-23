@@ -1,13 +1,24 @@
+import os
+import sys
+
+# Ensure backend directory and project root are in sys.path
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(backend_dir)
+for p in [backend_dir, project_root]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from mcp.server.mcpserver import MCPServer
-import sys
 import uvicorn
 import json
 import asyncio
 from sse_starlette.sse import EventSourceResponse
 from dotenv import load_dotenv
 
+env_path = os.path.join(backend_dir, ".env")
+load_dotenv(env_path)
 load_dotenv()
 
 sys.stdout.reconfigure(encoding='utf-8')
@@ -39,8 +50,9 @@ from medusa.tools.transport import register_transport_tools
 from medusa.tools.handoff import register_handoff_tools
 from medusa.tools.operations import register_operations_tools
 from medusa.tools.triage import register_triage_tools
+from medusa.tools.smart_home import register_smart_home_tools
 
-# Register all 21 capabilities
+# Register all modular MCP capabilities
 register_patient_tools(mcp)
 register_incident_tools(mcp)
 register_situation_tools(mcp)
@@ -51,6 +63,7 @@ register_transport_tools(mcp)
 register_handoff_tools(mcp)
 register_operations_tools(mcp)
 register_triage_tools(mcp)
+register_smart_home_tools(mcp)
 
 @app.get("/")
 async def root_ping():
@@ -124,7 +137,8 @@ async def get_incidents():
                 "handoff": {
                     "generated": inc_data.get("handoff_state", {}).get("generated", False),
                     "document": inc_data.get("handoff_state", {}).get("document", db.handoffs.get(inc_id, None))
-                }
+                },
+                "last_call": op_state.get("last_call", None)
             },
             "agent_logs": inc_data.get("agent_logs", {})
         })
@@ -159,11 +173,14 @@ async def get_mcp_tools():
     registry = {
         "INCIDENT": [],
         "PATIENT": [],
-        "COMMUNICATION": [],
+        "TRIAGE": [],
         "RESOURCE": [],
         "TRANSPORT": [],
+        "COMMUNICATION": [],
+        "COMMUNITY": [],
+        "SMART_HOME": [],
         "HANDOFF": [],
-        "TRIAGE": [],
+        "OPERATIONS": [],
         "OTHER": []
     }
     
@@ -171,21 +188,27 @@ async def get_mcp_tools():
         name = t.name
         desc = t.description
         
-        # Categorize based on known capability groupings
-        if name in ["create_incident", "get_incident_status", "update_incident"]:
+        # Categorize based on capability groupings
+        if name in ["create_incident", "get_incident_status", "update_incident", "get_incident_timeline", "close_incident", "update_clinical_state"]:
             category = "INCIDENT"
-        elif name in ["resolve_kinship", "get_patient_context", "get_emergency_contacts", "get_important_location"]:
+        elif name in ["resolve_kinship", "get_patient_context", "get_emergency_contacts", "get_important_location", "analyze_drug_interactions"]:
             category = "PATIENT"
-        elif name in ["notify_emergency_contacts", "notify_family", "send_incident_update"]:
-            category = "COMMUNICATION"
-        elif name in ["search_care_resources", "check_facility_status", "get_hospital_capacity"]:
-            category = "RESOURCE"
-        elif name in ["coordinate_transport", "request_transport", "get_transport_status"]:
-            category = "TRANSPORT"
-        elif name in ["generate_handoff"]:
-            category = "HANDOFF"
-        elif name in ["assign_triage_priority", "update_clinical_state", "record_observation"]:
+        elif name in ["assign_triage_priority", "calculate_gcs_score", "stream_biometric_vitals", "record_observation"]:
             category = "TRIAGE"
+        elif name in ["search_care_resources", "recommend_care_resource", "verify_cath_lab_availability", "query_trauma_blood_inventory", "reserve_emergency_bed"]:
+            category = "RESOURCE"
+        elif name in ["coordinate_transport", "request_transport", "get_transport_status", "calculate_route_traffic_delta", "request_green_corridor_signal"]:
+            category = "TRANSPORT"
+        elif name in ["notify_emergency_contacts", "notify_family", "send_incident_update", "trigger_voice_call", "get_notification_status"]:
+            category = "COMMUNICATION"
+        elif name in ["find_nearby_helpers", "request_helper_assistance", "get_helper_status"]:
+            category = "COMMUNITY"
+        elif name in ["unlock_smart_door_for_ems", "broadcast_household_intercom", "silence_ambient_appliances"]:
+            category = "SMART_HOME"
+        elif name in ["generate_handoff", "get_handoff", "share_handoff", "export_handoff", "export_audit_telemetry"]:
+            category = "HANDOFF"
+        elif name in ["get_incident_activity"]:
+            category = "OPERATIONS"
         else:
             category = "OTHER"
             
@@ -205,6 +228,27 @@ async def trigger_emergency(request: Request):
     history = data.get("history", [])
     session_id = data.get("session_id", "default")
     return EventSourceResponse(run_emergency_agent(prompt, history, mcp, session_id))
+
+
+@app.post("/api/emergency/call")
+async def trigger_emergency_call(request: Request):
+    data = await request.json()
+    incident_id = data.get("incident_id")
+    phone_number = data.get("phone_number")
+    message = data.get("message")
+    from medusa.tools.communication import place_phone_call
+    result = place_phone_call(incident_id, target_phone=phone_number, message_override=message)
+    return result
+
+
+@app.get("/api/emergency/call-status")
+async def get_emergency_call_status():
+    from medusa.database import db
+    active = {k: v for k, v in db.incidents.items() if v["operational_state"].get("status") == "ACTIVE"}
+    if active:
+        inc = list(active.values())[-1]
+        return inc.get("operational_state", {}).get("last_call", {"status": "NO_CALL_YET"})
+    return {"status": "NO_ACTIVE_INCIDENT"}
 
 
 # Mount the MCP SSE app onto the FastAPI app

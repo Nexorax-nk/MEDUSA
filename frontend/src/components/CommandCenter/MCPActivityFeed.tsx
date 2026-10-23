@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useIncident } from '../../context/IncidentContext';
 import { Network, CheckCircle2, Clock, XCircle, Loader2 } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 import './MCPActivity.css';
 
 
@@ -12,7 +13,7 @@ export function MCPActivityFeed() {
 
   useEffect(() => {
     // Fetch live registry from the backend
-    fetch('https://medusa-v8l9.onrender.com/api/mcp/tools')
+    fetch(`${API_BASE_URL}/api/mcp/tools`)
       .then(res => res.json())
       .then(data => setRegistry(data))
       .catch(err => console.error("Failed to fetch tool registry:", err));

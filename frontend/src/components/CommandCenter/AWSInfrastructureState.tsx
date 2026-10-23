@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useIncident } from '../../context/IncidentContext';
-import { Cloud, Server, Database, Zap, Repeat, Box, Lock, Network, Activity, Shield, Globe, MessageSquare } from 'lucide-react';
+import { Cloud, Database, Zap, Activity, Shield, Globe, MessageSquare } from 'lucide-react';
 import './EngineRoom.css';
 import './AWSActivity.css';
 

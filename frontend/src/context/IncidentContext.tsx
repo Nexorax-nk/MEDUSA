@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 // --- Types ---
 export type IncidentSeverity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'RESOLVED';
@@ -46,6 +47,7 @@ export interface Incident {
       generated: boolean;
       document: any | null;
     };
+    last_call?: any | null;
   };
   agent_logs?: Record<string, string[]>;
 }
@@ -181,7 +183,7 @@ export const IncidentProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     const fetchHistoryLogs = async () => {
       try {
-        const res = await fetch('https://medusa-v8l9.onrender.com/api/history');
+        const res = await fetch(`${API_BASE_URL}/api/history`);
         if (res.ok) {
           const data = await res.json();
           const rawLogs: { date: Date, id: string, time: string, level: string, source: string, message: string }[] = [];
@@ -328,7 +330,7 @@ export const IncidentProvider: React.FC<{ children: ReactNode }> = ({ children }
       };
 
       try {
-        const response = await fetch('https://medusa-v8l9.onrender.com/api/trigger-emergency', {
+        const response = await fetch(`${API_BASE_URL}/api/trigger-emergency`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt, history, session_id: sessionId }),
@@ -386,7 +388,7 @@ export const IncidentProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const fetchLiveState = async () => {
     try {
-      const incRes = await fetch('https://medusa-v8l9.onrender.com/api/incidents');
+      const incRes = await fetch(`${API_BASE_URL}/api/incidents`);
       if (incRes.ok) {
         const data = await incRes.json();
         const incidentList = (Array.isArray(data) ? data : Object.values(data)) as Incident[];

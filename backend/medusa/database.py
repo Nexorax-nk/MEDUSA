@@ -12,17 +12,17 @@ class MedusaMemorySystem:
                     "age": 20,
                     "phone": "+91 XXXXX XXXXX",
                     "email": "naveen@example.com",
-                    "home_address": "Chennai, Tamil Nadu",
+                    "home_address": "14/2 Gandhi Street, T. Nagar, Chennai, Tamil Nadu",
                     "city": "Chennai"
                 },
                 "emergency_contacts": {
-                    "1": {"name": "Priya Kumar", "phone": "+91 ZZZZZ", "type": "Mother", "priority": "Primary"},
-                    "2": {"name": "Ramesh Kumar", "phone": "+91 UUUUU", "type": "Uncle", "priority": "Secondary"},
-                    "3": {"name": "Dr. Sharma", "phone": "+91 AAAAA", "type": "Family Doctor", "priority": "Backup"},
-                    "4": {"name": "Suresh", "phone": "+91 BBBBB", "type": "Trusted Contact", "priority": "Backup"}
+                    "1": {"name": "Priya Kumar", "phone": "+916383642856", "type": "Mother (Wife of Patient)", "priority": "Primary"},
+                    "2": {"name": "Ramesh Kumar", "phone": "+91 98401 23456", "type": "Uncle", "priority": "Secondary"},
+                    "3": {"name": "Dr. Sharma", "phone": "+91 94440 11223", "type": "Family Doctor", "priority": "Backup"},
+                    "4": {"name": "Suresh", "phone": "+91 97910 87654", "type": "Trusted Contact (Uncle)", "priority": "Backup"}
                 },
                 "important_locations": {
-                    "home": {"address": "Chennai, Tamil Nadu", "lat": 13.0827, "lng": 80.2707},
+                    "home": {"address": "14/2 Gandhi Street, T. Nagar, Chennai, Tamil Nadu", "lat": 13.0418, "lng": 80.2341},
                     "college": {"address": "SRM Institute", "lat": 12.8236, "lng": 80.0435},
                     "parents_home": {"address": "Madurai", "lat": 9.9252, "lng": 78.1198}
                 },
@@ -144,6 +144,10 @@ class MedusaMemorySystem:
                 # Merge loaded data over the default schema to preserve new keys
                 for k, v in user_data.items():
                     self.memory["USER_MEMORY"][k] = v
+                if self.memory["USER_MEMORY"].get("profile", {}).get("home_address") == "Chennai, Tamil Nadu":
+                    self.memory["USER_MEMORY"]["profile"]["home_address"] = "14/2 Gandhi Street, T. Nagar, Chennai, Tamil Nadu"
+                if self.memory["USER_MEMORY"].get("important_locations", {}).get("home", {}).get("address") == "Chennai, Tamil Nadu":
+                    self.memory["USER_MEMORY"]["important_locations"]["home"]["address"] = "14/2 Gandhi Street, T. Nagar, Chennai, Tamil Nadu"
                 save_user_data("USER_MEMORY", self.memory["USER_MEMORY"])
             else:
                 save_user_data("USER_MEMORY", self.memory["USER_MEMORY"])
@@ -249,7 +253,11 @@ class MedusaMemorySystem:
                 "status": "ACTIVE",
                 "observations": [],
                 "assigned_helpers": [],
-                "triage_priority": None
+                "triage_priority": None,
+                "event_type": event_type,
+                "location": None,
+                "location_verified": False,
+                "location_source": "PENDING"
             },
             "handoff_state": {
                 "generated": False,

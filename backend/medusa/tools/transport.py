@@ -43,3 +43,40 @@ def register_transport_tools(mcp):
             print(f"Error saving transport: {e}")
         
         return json.dumps(receipt, indent=2)
+
+    @mcp.tool()
+    def calculate_route_traffic_delta(origin: str, destination: str) -> str:
+        """Calculate differential travel time comparing civilian rush-hour traffic vs. emergency priority sirens-active transit."""
+        print(f"[TOOL CALLED] TRANSPORT: calculate_route_traffic_delta(origin='{origin}', dest='{destination}')")
+        standard_traffic_min = random.randint(28, 42)
+        emergency_priority_min = max(9, int(standard_traffic_min * 0.45))
+        delta_saved = standard_traffic_min - emergency_priority_min
+        
+        receipt = {
+            "origin": origin,
+            "destination": destination,
+            "standard_civilian_traffic_duration_min": standard_traffic_min,
+            "emergency_priority_transit_min": emergency_priority_min,
+            "critical_minutes_saved": delta_saved,
+            "golden_hour_window_preserved": True,
+            "calculated_at": datetime.now().isoformat()
+        }
+        return json.dumps(receipt, indent=2)
+
+    @mcp.tool()
+    def request_green_corridor_signal(incident_id: str, route_corridor: str) -> str:
+        """Issue an intelligent traffic signal preemption request (Emergency Green Wave) along the ambulance route."""
+        print(f"[TOOL CALLED] TRANSPORT: request_green_corridor_signal(incident_id='{incident_id}', corridor='{route_corridor}')")
+        incident = db.get_incident(incident_id)
+        receipt = {
+            "incident_id": incident_id,
+            "route_corridor": route_corridor,
+            "signal_preemption": "ACTIVE",
+            "intersections_synchronized": 7,
+            "estimated_junction_delay_reduction_percent": 68,
+            "status": "GREEN_CORRIDOR_ESTABLISHED"
+        }
+        if incident:
+            db.record_observation(incident_id, f"Smart city green corridor synchronized along {route_corridor} for ambulance transit.")
+        return json.dumps(receipt, indent=2)
+
